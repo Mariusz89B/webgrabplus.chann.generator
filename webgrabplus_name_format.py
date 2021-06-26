@@ -15,26 +15,23 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.pack()
-        self.create_widgets()
+        self.gui()
 
-    def create_widgets(self):
+    def gui(self):
         myFont = font.Font(family="Terminal", size=22)
 
         canvas.pack()
 
-        label = tk.Label(root, text='Create alternative channel names for Webgrab+ config file')
+        label = tk.Label(self, text='Create alternative channel names for Webgrab+ config file')
         label.config(font=('Helvetica', 16))
-        canvas.create_window(200, 0, window=label)
-        canvas.place(relx = 0.5,
-                   rely = 0.5,
-                   anchor = 'center')
+        label.grid(row=0, column=2, padx=0, pady=100)
         
         start = tk.Button(self, height=3, width=15, text="Create", fg="blue", command=self.run)
-        start.grid(row=0, column=1, padx=50, pady=300)
+        start.grid(row=1, column=1, padx=50, pady=300)
         start['font'] = myFont
 
         ex = tk.Button(self, height=3, width=15, text="Exit", fg="red", command=self.master.destroy)
-        ex.grid(row=0, column=2, padx=50, pady=300)
+        ex.grid(row=1, column=3, padx=50, pady=300)
         ex['font'] = myFont
 
 
