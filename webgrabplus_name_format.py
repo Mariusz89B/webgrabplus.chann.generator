@@ -112,10 +112,10 @@ class Application(tk.Frame):
 
         # Find country code prefix
         try:
-            ccList = re.findall('\s<chann.*site_channel=".*" xmltv_id=".*\w{2,3}">.*<\/channel>', webConfig)
+            ccList = re.findall('\s<chann.*site_channel=".*" xmltv_id=".*\s\w{2,3}">.*<\/channel>', webConfig)
             cc = ccList[0]
         except:
-            cc = ''
+            cc = 'XX'
 
         # Non HD chann list
         channChList = list()
@@ -127,12 +127,12 @@ class Application(tk.Frame):
         with open(dest+'output.xml', 'wb') as subChann:
             for chann_id in channList:
                 try:
-                    getPrefix = re.findall(r'\w{2,3}$', chann_id)
+                    getPrefix = re.findall(r'\s(\w{2,3})$', chann_id)
                     cc = getPrefix[0]
                     if cc != cc.upper():
                         cc = 'XX'
                 except:
-                    cc = ''
+                    cc = 'XX'
                     
                 for item in tempList:
                     chann = re.sub('\s*{cc}$'.format(cc=cc), '', chann_id)
@@ -173,17 +173,35 @@ class Application(tk.Frame):
                         hd = ''
                         fhd = ''
 
-                    if '{ww}' in item and not '{norm}' in item:
-                        result = item.format(chann_id=chann_id, cc=cc, chann=chann, sd=sd, hd=hd, fhd=fhd, ww=ww)#.replace('\n', '')#.encode('utf-8')
+                    print(cc)
+                    result = ''
 
-                    elif '{norm}' in item and '{ww}' in item:
-                        result = item.format(chann_id=chann_id, cc=cc, norm=norm, sd=sd, hd=hd, fhd=fhd, ww=ww)#.replace('\n', '')#.encode('utf-8')
-                        
-                    elif '{norm}' in item:
-                        result = item.format(chann_id=chann_id, cc=cc, norm=norm, sd=sd, hd=hd, fhd=fhd)#.replace('\n', '')#.encode('utf-8')
-                        
+                    nonList = ['XX','TV','SD','HD','FHD','VIP','XD']
+                    
+                    if cc in nonList:
+                        if '{ww}' in item and not '{norm}' in item and not '{cc}' in item:
+                            result = item.format(chann_id=chann_id, chann=chann, sd=sd, hd=hd, fhd=fhd, ww=ww)#.replace('\n', '')#.encode('utf-8')
+
+                        elif '{norm}' in item and '{ww}' in item and not '{cc}' in item:
+                            result = item.format(chann_id=chann_id, norm=norm, sd=sd, hd=hd, fhd=fhd, ww=ww)#.replace('\n', '')#.encode('utf-8')
+                            
+                        elif '{norm}' in item and not '{cc}' in item:
+                            result = item.format(chann_id=chann_id, norm=norm, sd=sd, hd=hd, fhd=fhd)#.replace('\n', '')#.encode('utf-8')
+                            
+                        elif not '{cc}' in item:
+                            result = item.format(chann_id=chann_id, chann=chann, sd=sd, hd=hd, fhd=fhd)#.replace('\n', '')#.encode('utf-8')
                     else:
-                        result = item.format(chann_id=chann_id, cc=cc, chann=chann, sd=sd, hd=hd, fhd=fhd)#.replace('\n', '')#.encode('utf-8')
+                        if '{ww}' in item and not '{norm}' in item:
+                            result = item.format(chann_id=chann_id, cc=cc, chann=chann, sd=sd, hd=hd, fhd=fhd, ww=ww)#.replace('\n', '')#.encode('utf-8')
+
+                        elif '{norm}' in item and '{ww}' in item:
+                            result = item.format(chann_id=chann_id, cc=cc, norm=norm, sd=sd, hd=hd, fhd=fhd, ww=ww)#.replace('\n', '')#.encode('utf-8')
+                            
+                        elif '{norm}' in item:
+                            result = item.format(chann_id=chann_id, cc=cc, norm=norm, sd=sd, hd=hd, fhd=fhd)#.replace('\n', '')#.encode('utf-8')
+                            
+                        else:
+                            result = item.format(chann_id=chann_id, cc=cc, chann=chann, sd=sd, hd=hd, fhd=fhd)#.replace('\n', '')#.encode('utf-8')
                     same = re.findall('same_as="(.*?)"', str(result))
                     xmltv = re.findall('xmltv_id="(.*?)"', str(result))
                     if same != xmltv:
