@@ -113,16 +113,6 @@ class Application(tk.Frame):
         channList = re.findall('\s<chann.*site_channel=".*" xmltv_id="(.*?)">.*<\/channel>', webConfig)
         channNonHDList = re.findall('\s<chann.*site_channel=".*" xmltv_id="(.*?)\sHD.*">.*<\/channel>', webConfig)
 
-        # Normilize characters
-        #normList = list()
-        #n = re.findall('\s<chann.*site_channel=".*" xmltv_id="(.*?)">.*<\/channel>', webConfig)
-        #for title in n:
-        #    norm = unidecode(title)
-        #    if norm not in channList:
-        #        normList.append(norm)
-                
-        #print(normList)
-
         # Find country code prefix
         try:
             ccList = re.findall('\s<chann.*site_channel=".*" xmltv_id=".*\w{2,3}">.*<\/channel>', webConfig)
@@ -142,6 +132,8 @@ class Application(tk.Frame):
                 try:
                     getPrefix = re.findall(r'\w{2,3}$', chann_id)
                     cc = getPrefix[0]
+                    if cc != cc.upper():
+                        cc = 'XX'
                 except:
                     cc = ''
                     
