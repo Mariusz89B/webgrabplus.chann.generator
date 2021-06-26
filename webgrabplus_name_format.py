@@ -107,12 +107,12 @@ class Application(tk.Frame):
                     '\t<channel same_as="{chann_id}" xmltv_id="{norm}{fhd}">{norm}{fhd}</channel>\n']
         
         # Find channels in Webgrab config
-        channList = re.findall('\s<chann.*site_channel=".*" xmltv_id="(.*?)">.*<\/channel>', webConfig)
-        channNonHDList = re.findall('\s<chann.*site_channel=".*" xmltv_id="(.*?)\sHD.*">.*<\/channel>', webConfig)
+        channList = re.findall('\s*<chann.*site_channel=".*" xmltv_id="(.*?)">.*<\/channel>', webConfig)
+        channNonHDList = re.findall('\s*<chann.*site_channel=".*" xmltv_id="(.*?)\sHD.*">.*<\/channel>', webConfig)
 
         # Find country code prefix
         try:
-            ccList = re.findall('\s<chann.*site_channel=".*" xmltv_id=".*\s\w{2,3}">.*<\/channel>', webConfig)
+            ccList = re.findall('\s*<chann.*site_channel=".*" xmltv_id=".*\s\w{2,3}">.*<\/channel>', webConfig)
             cc = ccList[0]
         except:
             cc = 'XX'
@@ -173,7 +173,6 @@ class Application(tk.Frame):
                         hd = ''
                         fhd = ''
 
-                    print(cc)
                     result = ''
 
                     nonList = ['XX','TV','SD','HD','FHD','VIP','XD']
